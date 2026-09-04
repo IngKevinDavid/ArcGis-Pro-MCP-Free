@@ -1,0 +1,1 @@
+arcgis-mcp-server==0.6.0

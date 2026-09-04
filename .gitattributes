@@ -1,0 +1,8 @@
+* text=auto
+*.sln text eol=crlf
+*.csproj text eol=crlf
+*.daml text eol=crlf
+*.xaml text eol=crlf
+*.png binary
+*.jpg binary
+*.esriAddinX binary

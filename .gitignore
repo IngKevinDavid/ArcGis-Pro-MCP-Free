@@ -1,0 +1,27 @@
+# Build outputs
+bin/
+obj/
+package/stage/
+*.zip
+
+# Python
+py-server/.venv/
+py-server/__pycache__/
+tests/__pycache__/
+*.pyc
+
+# IDE / OS
+.vs/
+*.user
+Desktop.ini
+Thumbs.db
+
+# Scratch data (tests use %TEMP%)
+*.gdb/
+*.aprx
+*.pdf
+*.png
+*.lyrx
+
+# ...but the Add-In icons ship with the package
+!Images/**
