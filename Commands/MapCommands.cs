@@ -24,18 +24,19 @@ namespace ArcGisProMcpFree.Commands
                 }
 
                 var map = activeView.Map;
+                var camera = activeView.Camera;
                 return new
                 {
                     map_name = map != null ? map.Name : "None",
                     view_type = activeView.ViewingMode.ToString(), // 2D or 3D
-                    camera = new
+                    camera = camera == null ? null : (object)new
                     {
-                        heading = SafeDouble(activeView.Camera.Heading),
-                        pitch = SafeDouble(activeView.Camera.Pitch),
-                        roll = SafeDouble(activeView.Camera.Roll),
-                        x = SafeDouble(activeView.Camera.X),
-                        y = SafeDouble(activeView.Camera.Y),
-                        z = SafeDouble(activeView.Camera.Z)
+                        heading = SafeDouble(camera.Heading),
+                        pitch = SafeDouble(camera.Pitch),
+                        roll = SafeDouble(camera.Roll),
+                        x = SafeDouble(camera.X),
+                        y = SafeDouble(camera.Y),
+                        z = SafeDouble(camera.Z)
                     }
                 };
             });
