@@ -9,7 +9,7 @@ using ArcGIS.Core.Geometry;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
 using ArcGIS.Desktop.Mapping;
 
-namespace LibreMcpAddin.Commands
+namespace ArcGisProMcpFree.Commands
 {
     public static class GeometryCommands
     {

@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.Json;
 using System.Threading.Tasks;
-using LibreMcpAddin.Commands;
+using ArcGisProMcpFree.Commands;
 
-namespace LibreMcpAddin
+namespace ArcGisProMcpFree
 {
     public static class CommandHandler
     {

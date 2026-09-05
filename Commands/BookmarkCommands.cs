@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
 using ArcGIS.Desktop.Mapping;
 
-namespace LibreMcpAddin.Commands
+namespace ArcGisProMcpFree.Commands
 {
     /// <summary>
     /// Bookmark management. ``list_bookmarks`` lives in

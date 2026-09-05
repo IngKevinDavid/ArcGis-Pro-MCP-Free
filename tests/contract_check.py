@@ -1,4 +1,4 @@
-"""Pipe-level contract suite for LibreMcpAddin (Pro 3.5 backport).
+"""Pipe-level contract suite for ArcGisProMcpFree (Pro 3.5 backport).
 Runs against \\\\.\\pipe\\ArcGisMcpBridge with length-prefixed JSON framing.
 Usage (venv python with pywin32):
   python contract_check.py
@@ -266,6 +266,10 @@ def main():
     # --- documented boundaries (must fail CLEANLY, never crash the pipe) ---
     check("portal_gap", "get_active_portal", expect_success=False)
     check("geometry_gap", "geometry_area", expect_success=False)
+    check("publish_gap", "publish_web_layer",
+          {"service_definition_path": "C:\\none\\x.sd"}, expect_success=False)
+    check("stage_gap", "stage_service_definition",
+          {"service_draft_path": "C:\\none\\x.sddraft"}, expect_success=False)
     # --- open_map really works on 3.5 via MapProjectItem.OpenMapPaneAsync ---
     try:
         _mnames = [mm.get("name") for mm in (info or {}).get("data", {}).get("maps", [])]

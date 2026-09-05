@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ArcGIS.Core.Licensing;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
 
-namespace LibreMcpAddin.Commands
+namespace ArcGisProMcpFree.Commands
 {
     public static class LicenseCommands
     {

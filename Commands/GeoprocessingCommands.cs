@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ArcGIS.Desktop.Core.Geoprocessing;
 
-namespace LibreMcpAddin.Commands
+namespace ArcGisProMcpFree.Commands
 {
     public static class GeoprocessingCommands
     {

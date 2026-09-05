@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LibreMcpAddin
+namespace ArcGisProMcpFree
 {
     // TCP transport for the MCP bridge: listens on 127.0.0.1:PORT only
     // (loopback, never exposed to the LAN). Same 4-byte little-endian

@@ -11,7 +11,7 @@ using ArcGIS.Desktop.Core.Geoprocessing;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
 using ArcGIS.Desktop.Mapping;
 
-namespace LibreMcpAddin.Commands
+namespace ArcGisProMcpFree.Commands
 {
     public static class SymbologyCommands
     {

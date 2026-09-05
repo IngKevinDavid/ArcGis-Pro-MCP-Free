@@ -3,7 +3,7 @@ using System.Windows.Media.Imaging;
 using ArcGIS.Desktop.Framework;
 using ArcGIS.Desktop.Framework.Contracts;
 
-namespace LibreMcpAddin
+namespace ArcGisProMcpFree
 {
     public class Module1 : Module
     {
@@ -19,7 +19,7 @@ namespace LibreMcpAddin
             get
             {
                 if (_this == null)
-                    _this = (Module1)FrameworkApplication.FindModule("LibreMcpAddin_Module");
+                    _this = (Module1)FrameworkApplication.FindModule("ArcGisProMcpFree_Module");
                 return _this;
             }
         }
@@ -105,7 +105,7 @@ namespace LibreMcpAddin
         private static System.Windows.Media.Imaging.BitmapImage Icon(string file)
         {
             return new System.Windows.Media.Imaging.BitmapImage(new System.Uri(
-                "pack://application:,,,/LibreMcpAddin;component/Images/" + file));
+                "pack://application:,,,/ArcGisProMcpFree;component/Images/" + file));
         }
 
         protected override void OnClick()

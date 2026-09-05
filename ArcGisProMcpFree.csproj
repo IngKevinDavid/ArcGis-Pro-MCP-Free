@@ -9,8 +9,8 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
-    <AssemblyName>LibreMcpAddin</AssemblyName>
-    <RootNamespace>LibreMcpAddin</RootNamespace>
+    <AssemblyName>ArcGisProMcpFree</AssemblyName>
+    <RootNamespace>ArcGisProMcpFree</RootNamespace>
     <Nullable>disable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>

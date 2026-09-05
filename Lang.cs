@@ -1,6 +1,6 @@
 using Microsoft.Win32;
 
-namespace LibreMcpAddin
+namespace ArcGisProMcpFree
 {
     /// <summary>
     /// UI language: English by default, Spanish on toggle. Persisted in
@@ -8,7 +8,7 @@ namespace LibreMcpAddin
     /// </summary>
     internal static class Lang
     {
-        private const string Key = @"HKEY_CURRENT_USER\SOFTWARE\ArcGeekLibre\LibreMcp";
+        private const string Key = @"HKEY_CURRENT_USER\SOFTWARE\IngKevin\ArcGisProMcpFree";
 
         public static string Current { get; private set; } = Load();
 

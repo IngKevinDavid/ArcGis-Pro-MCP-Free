@@ -5,7 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media.Imaging;
 
-namespace LibreMcpAddin
+namespace ArcGisProMcpFree
 {
     /// <summary>
     /// Manual control panel for the MCP TCP bridge, built fully in code
@@ -116,7 +116,7 @@ namespace LibreMcpAddin
             try
             {
                 photo.Source = new BitmapImage(new Uri(
-                    "pack://application:,,,/LibreMcpAddin;component/Images/creator.jpg"));
+                    "pack://application:,,,/ArcGisProMcpFree;component/Images/creator.jpg"));
             }
             catch
             {
