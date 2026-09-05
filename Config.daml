@@ -1,9 +1,9 @@
 <ArcGIS defaultAssembly="LibreMcpAddin.dll" defaultNamespace="LibreMcpAddin" xmlns="http://schemas.esri.com/DADF/Registry" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.esri.com/DADF/Registry file:///C:/Program%20Files/ArcGIS/Pro/bin/ArcGIS.Desktop.Framework.xsd">
   <AddInInfo id="{59c64cb3-4493-4270-8a30-43b67c25e82e}" version="0.1.0" desktopVersion="3.5">
-    <Name>Libre MCP Bridge</Name>
-    <Description>License-free MCP Bridge Add-In for ArcGIS Pro 3.5. Opens a local TCP bridge (127.0.0.1:port, default 5876) speaking the same protocol as arcgis-mcp v0.6.0 (MIT) so its Python tools work unchanged.</Description>
-    <Image>Images\ArcGisMcp32.png</Image>
-    <Author>ArcGeekLibre</Author>
+    <Name>MCP Free Bridge</Name>
+    <Description>License-free MCP Free Bridge Add-In for ArcGIS Pro 3.5. Opens a local TCP bridge (127.0.0.1:port, default 5876) speaking the same protocol as arcgis-mcp v0.6.0 (MIT) so its Python tools work unchanged. Created by: IngKevin</Description>
+    <Image>Images\mcp_red32.png</Image>
+    <Author>IngKevin</Author>
     <Company>ArcGeekLibre</Company>
     <Date>2026-09-04</Date>
     <Subject>GIS, Developer Tools, MCP, ArcGIS Pro</Subject>
@@ -12,24 +12,24 @@
   <modules>
     <!-- The module loads with Pro, but the pipe server only starts when the
          user presses Iniciar in the dockpane. Nothing listens on its own. -->
-    <insertModule id="LibreMcpAddin_Module" className="Module1" autoLoad="true" caption="Libre MCP Module">
+    <insertModule id="LibreMcpAddin_Module" className="Module1" autoLoad="true" caption="MCP Free Bridge Module">
       <tabs>
-        <tab id="LibreMcpAddin_Tab" caption="Libre MCP">
+        <tab id="LibreMcpAddin_Tab" caption="MCP Free Bridge">
           <group refID="LibreMcpAddin_Group" />
         </tab>
       </tabs>
 
       <groups>
-        <group id="LibreMcpAddin_Group" caption="Puente MCP" appearsOnAddInTab="false">
+        <group id="LibreMcpAddin_Group" caption="MCP Free Bridge" appearsOnAddInTab="false">
           <button refID="LibreMcpAddin_ControlButton" size="large" />
         </group>
       </groups>
 
       <controls>
-        <button id="LibreMcpAddin_ControlButton" caption="Puente MCP" className="BridgeControlButton" loadOnClick="true"
-                smallImage="Images\ArcGisMcp16.png" largeImage="Images\ArcGisMcp32.png">
-          <tooltip heading="Puente MCP">
-            Abre el panel para iniciar/detener el puente manualmente y elegir el puerto (defecto 5876).
+        <button id="LibreMcpAddin_ControlButton" caption="MCP Free Bridge" className="BridgeControlButton" loadOnClick="true"
+                smallImage="Images\mcp_red16.png" largeImage="Images\mcp_red32.png">
+          <tooltip heading="MCP Free Bridge">
+            Opens the panel to start/stop the bridge manually and pick the port (default 5876). UI in English, switchable to Spanish.
           </tooltip>
         </button>
       </controls>

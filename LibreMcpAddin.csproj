@@ -28,10 +28,6 @@
       <HintPath>C:\Program Files\ArcGIS\Pro\bin\Extensions\Catalog\ArcGIS.Desktop.Catalog.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="ArcGIS.Desktop.Catalog">
-      <HintPath>C:\Program Files\ArcGIS\Pro\bin\Extensions\Catalog\ArcGIS.Desktop.Catalog.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="ArcGIS.Desktop.Framework">
       <HintPath>C:\Program Files\ArcGIS\Pro\bin\ArcGIS.Desktop.Framework.dll</HintPath>
       <Private>False</Private>
@@ -59,6 +55,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\creator.jpg" />
+    <Resource Include="Images\mcp_red16.png" />
+    <Resource Include="Images\mcp_red32.png" />
+    <Resource Include="Images\mcp_green16.png" />
+    <Resource Include="Images\mcp_green32.png" />
     <None Remove="Config.daml" />
     <None Remove="Images\**" />
     <Content Include="Config.daml" />

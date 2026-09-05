@@ -50,12 +50,12 @@ namespace LibreMcpAddin
             if (IsRunning) return;
 
             _listener = new TcpListener(IPAddress.Loopback, _port);
-            _listener.Start();
+            _listener.Start(32);
             _cts = new CancellationTokenSource();
             _listeners = new List<Task>();
             for (int i = 0; i < MaxListeners; i++)
                 _listeners.Add(Task.Run(() => ListenerLoopAsync(_cts.Token)));
-            System.Diagnostics.Debug.WriteLine("Libre MCP TCP bridge listening on " + Endpoint);
+            System.Diagnostics.Debug.WriteLine("MCP Free Bridge listening on " + Endpoint);
         }
 
         public void Stop()
@@ -78,7 +78,7 @@ namespace LibreMcpAddin
                 _cts = null;
                 _listener = null;
                 _listeners = null;
-                System.Diagnostics.Debug.WriteLine("Libre MCP TCP bridge stopped.");
+                System.Diagnostics.Debug.WriteLine("MCP Free Bridge stopped.");
             }
         }
 

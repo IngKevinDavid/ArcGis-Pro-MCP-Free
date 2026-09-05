@@ -38,13 +38,14 @@ def _read_sock(s, size):
     return b"".join(chunks)
 
 
-def call(command, params=None, timeout_ms=15000):
+def call(command, params=None, timeout_ms=15000, attempts=5):
     req = json.dumps({"command": command, "params": params or {}}).encode("utf-8")
     last = None
-    for _ in range(5):
+    for _ in range(attempts):
         s = None
         try:
             s = socket.create_connection(ENDPOINT, timeout=3)
+            s.settimeout(timeout_ms / 1000)
             s.sendall(struct.pack("<I", len(req)) + req)
             n = struct.unpack("<I", _read_sock(s, 4))[0]
             return json.loads(_read_sock(s, n).decode("utf-8"))
@@ -60,9 +61,10 @@ def call(command, params=None, timeout_ms=15000):
     raise last
 
 
-def check(name, command, params=None, expect_success=True, key=None):
+def check(name, command, params=None, expect_success=True, key=None,
+          timeout_ms=15000, attempts=5):
     try:
-        r = call(command, params)
+        r = call(command, params, timeout_ms, attempts)
     except Exception as e:  # noqa: BLE001 - report transport faults plainly
         FAIL.append(f"{name}: TRANSPORT {type(e).__name__} {e}")
         print(f"FAIL {name}: transport {e}")
@@ -262,9 +264,26 @@ def main():
         FAIL.append(f"exec output missing: {json.dumps(r)[:160]}")
         print("FAIL exec output missing")
     # --- documented boundaries (must fail CLEANLY, never crash the pipe) ---
-    check("open_map_35_gap", "open_map", {"map_name": "Layers"}, expect_success=False)
     check("portal_gap", "get_active_portal", expect_success=False)
     check("geometry_gap", "geometry_area", expect_success=False)
+    # --- open_map really works on 3.5 via MapProjectItem.OpenMapPaneAsync ---
+    try:
+        _mnames = [mm.get("name") for mm in (info or {}).get("data", {}).get("maps", [])]
+    except Exception:
+        _mnames = []
+    if _mnames:
+        check("open_map", "open_map", {"map_name": _mnames[0]})
+        try:
+            am = call("get_active_map")
+            if am and _mnames[0].lower() in json.dumps(am).lower():
+                print("PASS open_map_verify (active map switched)")
+                PASS.append("open_map_verify (active map switched)")
+            else:
+                FAIL.append(f"open_map_verify: active is {json.dumps(am)[:160]}")
+                print("FAIL open_map_verify")
+        except Exception as e:
+            FAIL.append(f"open_map_verify: TRANSPORT {e}")
+            print(f"FAIL open_map_verify: TRANSPORT {e}")
     print(f"\n== {len(PASS)} PASS, {len(FAIL)} FAIL ==")
     if FAIL:
         print("Failures:")

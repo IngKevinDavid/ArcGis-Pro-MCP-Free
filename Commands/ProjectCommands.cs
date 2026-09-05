@@ -26,24 +26,23 @@ namespace LibreMcpAddin.Commands
             });
         }
 
-        public static Task<object> OpenMapAsync(string mapName)
+        public static async Task<object> OpenMapAsync(string mapName)
         {
-            // OpenMapPaneAsync/MapViewingMode only exist in ArcGIS Pro 3.6+.
-            // Verified against every 3.5 SDK namespace: the API is absent.
-            // On 3.5 the map must already be open; report that clearly.
-            return QueuedTask.Run<object>(() =>
+            EnsureProject();
+            var item = await QueuedTask.Run(() =>
+                Project.Current.GetItems<MapProjectItem>()
+                    .FirstOrDefault(map => map.Name.Equals(mapName, StringComparison.OrdinalIgnoreCase)));
+            if (item == null)
             {
-                EnsureProject();
-                bool exists = Project.Current.GetItems<MapProjectItem>()
-                    .Any(map => map.Name.Equals(mapName, StringComparison.OrdinalIgnoreCase));
-                if (!exists)
-                {
-                    throw new ArgumentException("Map '" + mapName + "' not found.");
-                }
-                throw new InvalidOperationException(
-                    "The open_map command needs ArcGIS Pro 3.6 or newer (OpenMapPaneAsync API). " +
-                    "On Pro 3.5, open the '" + mapName + "' map manually: it is already in this project.");
-            });
+                throw new ArgumentException("Map '" + mapName + "' not found.");
+            }
+            IMapPane pane = await item.OpenMapPaneAsync();
+            return new
+            {
+                success = true,
+                map_name = item.Name,
+                pane_visible = pane != null
+            };
         }
 
         public static async Task<object> SaveProjectAsAsync(string outputPath, bool overwrite)

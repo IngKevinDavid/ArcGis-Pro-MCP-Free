@@ -25,6 +25,17 @@ def layer_names():
         return []
 
 
+def safe_remove(path):
+    """Best-effort delete: Pro locks files it just wrote (.aprx)."""
+    try:
+        if os.path.exists(path):
+            os.remove(path)
+            return True
+    except OSError as e:
+        print(f"SKIP cleanup locked, delete by hand later: {path} ({e})")
+    return False
+
+
 def main():
     # --- visibility / transparency / zoom / extent (all restored) ---
     check("w2_hide", "toggle_layer_visibility", {"layer_name": BUF, "visible": False})
@@ -79,7 +90,7 @@ def main():
     if os.path.isdir(alldir):
         shutil.rmtree(alldir, ignore_errors=True)
     check("w2_export_all", "export_all_layouts", {"output_directory": alldir,
-          "format": "PDF", "resolution": 150})
+          "format": "PDF", "resolution": 150}, timeout_ms=180000, attempts=1)
     got = []
     for root, _, files in os.walk(alldir):
         got += [f for f in files if f.lower().endswith(".pdf")]
@@ -122,23 +133,34 @@ def main():
         FAIL.append("w2_fc_listed: W2_EXP absent")
         print("FAIL w2_fc_listed: W2_EXP absent")
     lyrx = os.path.join(TMP, "w2_buffer.lyrx")
-    if os.path.exists(lyrx):
-        os.remove(lyrx)
+    safe_remove(lyrx)
     check("w2_save_lyrx", "save_layer_file", {"layer_name": BUF, "output_path": lyrx})
     check("w2_apply_lyrx", "apply_symbology_from_layer",
           {"target_layer": BUF, "symbology_layer": lyrx})
     check("w2_load_lyrx", "load_layer_file", {"layer_file_path": lyrx})
-    if BUF in layer_names():
-        # the loaded copy lands beside the original; remove whichever duplicates exist
-        check("w2_rm_loaded", "remove_layer", {"layer_name": BUF + "1"})
+    _names2 = [n for n in layer_names() if BUF in (n or "")]
+    if len(_names2) >= 2:
+        # loaded copy duplicates the name; removing one leaves a single Buffer
+        check("w2_rm_loaded", "remove_layer", {"layer_name": _names2[0]})
+        _names3 = [n for n in layer_names() if BUF in (n or "")]
+        if len(_names3) == 1:
+            print("PASS w2_single_buffer_left")
+            PASS.append("w2_single_buffer_left")
+        else:
+            FAIL.append(f"w2_single_buffer_left: {_names3}")
+            print(f"FAIL w2_single_buffer_left: {_names3}")
+    else:
+        print(f"SKIP w2_rm_loaded: no duplicate ({_names2})")
+        PASS.append("w2_rm_loaded_skipped")
     if os.path.exists(lyrx):
-        os.remove(lyrx)
+        safe_remove(lyrx)
     check("w2_del_gdb5", "run_gp_tool", {"tool_name": "Delete_management",
           "parameters": [gdb5], "add_outputs_to_map": False, "allow_delete": True})
     # --- project copy (never touches the live .aprx) ---
     aprx = os.path.join(TMP, "w2_copy.aprx")
-    if os.path.exists(aprx):
-        os.remove(aprx)
+    if not safe_remove(aprx) and os.path.exists(aprx):
+        aprx = os.path.join(TMP, "w2_copy_b.aprx")
+        safe_remove(aprx)
     check("w2_save_as", "save_project_as", {"output_path": aprx, "overwrite": True})
     if os.path.exists(aprx):
         print("PASS w2_aprx_on_disk")

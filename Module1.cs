@@ -1,4 +1,5 @@
 using System;
+using System.Windows.Media.Imaging;
 using ArcGIS.Desktop.Framework;
 using ArcGIS.Desktop.Framework.Contracts;
 
@@ -66,7 +67,7 @@ namespace LibreMcpAddin
         #region Overrides
         /// <summary>
         /// Called when the Module is initialized. The bridge is NOT started here:
-        /// the user starts it manually from the Libre MCP window.
+        /// the user starts it manually from the MCP Free Bridge window.
         /// </summary>
         protected override bool Initialize()
         {
@@ -91,12 +92,47 @@ namespace LibreMcpAddin
 
     /// <summary>
     /// Ribbon button that opens the manual bridge control window.
+    /// Traffic light: red icon while the bridge is stopped, green while running.
     /// </summary>
     public class BridgeControlButton : Button
     {
+        private static System.Windows.Media.Imaging.BitmapImage _red16;
+        private static System.Windows.Media.Imaging.BitmapImage _red32;
+        private static System.Windows.Media.Imaging.BitmapImage _green16;
+        private static System.Windows.Media.Imaging.BitmapImage _green32;
+        private bool? _lastRunning;
+
+        private static System.Windows.Media.Imaging.BitmapImage Icon(string file)
+        {
+            return new System.Windows.Media.Imaging.BitmapImage(new System.Uri(
+                "pack://application:,,,/LibreMcpAddin;component/Images/" + file));
+        }
+
         protected override void OnClick()
         {
             BridgeControlWindow.ShowPanel();
+        }
+
+        protected override void OnUpdate()
+        {
+            bool running = Module1.Current != null && Module1.Current.IsBridgeRunning;
+            if (_lastRunning == running)
+                return;
+            _lastRunning = running;
+            if (running)
+            {
+                if (_green16 == null) _green16 = Icon("mcp_green16.png");
+                if (_green32 == null) _green32 = Icon("mcp_green32.png");
+                SmallImage = _green16;
+                LargeImage = _green32;
+            }
+            else
+            {
+                if (_red16 == null) _red16 = Icon("mcp_red16.png");
+                if (_red32 == null) _red32 = Icon("mcp_red32.png");
+                SmallImage = _red16;
+                LargeImage = _red32;
+            }
         }
     }
 }
