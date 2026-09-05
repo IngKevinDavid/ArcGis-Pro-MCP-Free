@@ -1,1 +1,3 @@
-arcgis-mcp-server==0.6.0
+# Pinned to the vendored wheel: arcgis-mcp-server 0.6.0 is not on PyPI
+# (PyPI hosts an unrelated 1.x line under the same name).
+./py-server/arcgis_mcp_server-0.6.0-py3-none-any.whl

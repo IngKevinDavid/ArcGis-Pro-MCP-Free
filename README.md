@@ -34,12 +34,11 @@ Assistant (opencode, Claude, ...)  <--stdio JSON-RPC-->  tcp_bridge.py
 
 Double-click **`package/ArcGisProMcpFree.esriAddinX`** — it installs itself. Or copy it to `Documents\ArcGIS\AddIns\ArcGISPro\`.
 
-### 2. Install the MCP launcher
+### 2. Install the MCP launcher (global Python 3.12+)
 
 ```powershell
-py -3.12 -m venv .venv
-.venv\Scripts\Activate.ps1
-pip install -r requirements.txt   # arcgis-mcp-server==0.6.0
+cd <repo>
+py -m pip install -r requirements.txt   # vendored wheel, no venv needed
 ```
 
 ### 3. Configure the MCP (opencode)

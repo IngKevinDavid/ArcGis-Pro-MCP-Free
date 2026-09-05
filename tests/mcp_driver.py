@@ -9,7 +9,7 @@ import json
 import subprocess
 import sys
 
-VENV_PY = r"D:\Rstudio\05_herramientas\ArcGeekLibre.Addin\py-server\.venv\Scripts\python.exe"
+VENV_PY = r"C:\Users\Kevin\AppData\Local\Programs\Python\Python313\python.exe"
 BRIDGE = r"D:\Rstudio\05_herramientas\ArcGeekLibre.Addin\py-server\tcp_bridge.py"
 
 
