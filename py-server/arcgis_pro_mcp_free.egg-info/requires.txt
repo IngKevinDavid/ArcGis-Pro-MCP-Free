@@ -1,0 +1,1 @@
+arcgis-mcp-server @ https://github.com/IngKevinDavid/ArcGis-Pro-MCP-Free/releases/download/v0.1.0/arcgis_mcp_server-0.6.0-py3-none-any.whl

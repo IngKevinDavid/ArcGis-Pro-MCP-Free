@@ -1,3 +1,14 @@
+Metadata-Version: 2.4
+Name: arcgis-pro-mcp-free
+Version: 0.1.0
+Summary: Free local MCP bridge for ArcGIS Pro (TCP 127.0.0.1:PORT)
+License: MIT
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: arcgis-mcp-server @ https://github.com/IngKevinDavid/ArcGis-Pro-MCP-Free/releases/download/v0.1.0/arcgis_mcp_server-0.6.0-py3-none-any.whl
+Dynamic: license-file
+
 # MCP Free Bridge for ArcGIS Pro
 
 *Versión en español: [README.es.md](README.es.md)*
@@ -34,44 +45,27 @@ Assistant (opencode, Claude, ...)  <--stdio JSON-RPC-->  tcp_bridge.py
 
 Double-click **`package/ArcGisProMcpFree.esriAddinX`** — it installs itself. Or copy it to `Documents\ArcGIS\AddIns\ArcGISPro\`.
 
-### 2. Install the MCP launcher — option A: uvx (no manual install)
-
-```json
-"arcgis_mcp_addin": {
-  "type": "local",
-  "command": [
-    "uvx",
-    "--from",
-    "git+https://github.com/IngKevinDavid/ArcGis-Pro-MCP-Free",
-    "arcgis-pro-mcp-free"
-  ],
-  "environment": {}
-}
-```
-
-uvx fetches the launcher from this repo on first use (the pinned tool wheel comes from the Release assets). Nothing to download by hand besides the Add-In.
-
-### 2b. Option B: global Python
+### 2. Install the MCP launcher (global Python 3.12+)
 
 ```powershell
 cd <repo>
 py -m pip install -r requirements.txt   # vendored wheel, no venv needed
 ```
 
+### 3. Configure the MCP (opencode)
+
 ```json
 "arcgis_mcp_addin": {
   "type": "local",
   "command": [
-    "C:\\Users\\YOU\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "PATH\\TO\\py-server\\.venv\\Scripts\\python.exe",
     "PATH\\TO\\py-server\\tcp_bridge.py"
   ],
   "environment": {}
 }
 ```
 
-### 3. Port selection
-
-Without `PORT`, everything uses **port 5876**. For another port (e.g. `8791`): type it in the Add-In window **and** add `"environment": {"PORT": "8791"}` to the MCP entry (reload the client so it picks it up).
+Without `PORT`, everything uses **port 5876**. For another port (e.g. `8791`): type it in the Add-In window **and** add `"environment": {"PORT": "8791"}` (reload opencode so it picks it up).
 
 ## Use
 

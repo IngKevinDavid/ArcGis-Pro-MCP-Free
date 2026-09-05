@@ -34,27 +34,44 @@ Asistente (opencode, Claude, ...)  <--stdio JSON-RPC-->  tcp_bridge.py
 
 Doble clic en **`package/ArcGisProMcpFree.esriAddinX`** → se instala solo. O copialo a `Documentos\ArcGIS\AddIns\ArcGISPro\`.
 
-### 2. Instalar el launcher MCP (Python global 3.12+)
+### 2. Instalar el launcher MCP — opción A: uvx (sin instalar nada a mano)
+
+```json
+"arcgis_mcp_addin": {
+  "type": "local",
+  "command": [
+    "uvx",
+    "--from",
+    "git+https://github.com/IngKevinDavid/ArcGis-Pro-MCP-Free",
+    "arcgis-pro-mcp-free"
+  ],
+  "environment": {}
+}
+```
+
+uvx trae el launcher desde este repo la primera vez (el wheel pineado sale de los assets del Release). Nada que descargar a mano salvo el Add-In.
+
+### 2b. Opción B: Python global
 
 ```powershell
 cd <repo>
 py -m pip install -r requirements.txt   # wheel incluido, sin venv
 ```
 
-### 3. Configurar el MCP (opencode)
-
 ```json
 "arcgis_mcp_addin": {
   "type": "local",
   "command": [
-    "RUTA\\A\\py-server\\.venv\\Scripts\\python.exe",
+    "C:\\Users\\TU\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
     "RUTA\\A\\py-server\\tcp_bridge.py"
   ],
   "environment": {}
 }
 ```
 
-Sin `PORT`, todo usa el **puerto 5876**. Para otro puerto (ej. `8791`): escribilo en la ventana del Add-In **y** agregá `"environment": {"PORT": "8791"}` (recargá opencode para que lo tome).
+### 3. Elección de puerto
+
+Sin `PORT`, todo usa el **puerto 5876**. Para otro puerto (ej. `8791`): escribilo en la ventana del Add-In **y** agregá `"environment": {"PORT": "8791"}` a la entrada MCP (recargá el cliente para que lo tome).
 
 ## Uso
 

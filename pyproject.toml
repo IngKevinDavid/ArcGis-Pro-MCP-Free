@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "arcgis-pro-mcp-free"
+version = "0.1.0"
+description = "Free local MCP bridge for ArcGIS Pro (TCP 127.0.0.1:PORT)"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+dependencies = [
+    "arcgis-mcp-server @ https://github.com/IngKevinDavid/ArcGis-Pro-MCP-Free/releases/download/v0.1.0/arcgis_mcp_server-0.6.0-py3-none-any.whl",
+]
+
+[project.scripts]
+arcgis-pro-mcp-free = "tcp_bridge:main"
+
+[tool.setuptools]
+py-modules = ["tcp_bridge"]
+
+[tool.setuptools.package-dir]
+"" = "py-server"

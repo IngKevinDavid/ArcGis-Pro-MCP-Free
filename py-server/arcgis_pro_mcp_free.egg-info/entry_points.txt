@@ -1,0 +1,2 @@
+[console_scripts]
+arcgis-pro-mcp-free = tcp_bridge:main
