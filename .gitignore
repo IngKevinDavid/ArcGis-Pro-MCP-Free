@@ -25,3 +25,8 @@ Thumbs.db
 
 # ...but the Add-In icons ship with the package
 !Images/**
+
+# Python packaging byproducts
+build/
+*.egg-info/
+dist/
