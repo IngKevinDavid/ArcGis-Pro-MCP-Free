@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <ArcGISProDir Condition="'$(ArcGISProDir)' == ''">C:\Program Files\ArcGIS\Pro</ArcGISProDir>
     <TargetFramework>net8.0-windows</TargetFramework>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <UseWPF>true</UseWPF>
@@ -17,45 +18,44 @@
 
   <ItemGroup>
     <Reference Include="ArcGIS.Core">
-      <HintPath>C:\Program Files\ArcGIS\Pro\bin\ArcGIS.Core.dll</HintPath>
+      <HintPath>$(ArcGISProDir)\bin\ArcGIS.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ArcGIS.Desktop.Core">
-      <HintPath>C:\Program Files\ArcGIS\Pro\bin\Extensions\Core\ArcGIS.Desktop.Core.dll</HintPath>
+      <HintPath>$(ArcGISProDir)\bin\Extensions\Core\ArcGIS.Desktop.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ArcGIS.Desktop.Catalog">
-      <HintPath>C:\Program Files\ArcGIS\Pro\bin\Extensions\Catalog\ArcGIS.Desktop.Catalog.dll</HintPath>
+      <HintPath>$(ArcGISProDir)\bin\Extensions\Catalog\ArcGIS.Desktop.Catalog.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ArcGIS.Desktop.Framework">
-      <HintPath>C:\Program Files\ArcGIS\Pro\bin\ArcGIS.Desktop.Framework.dll</HintPath>
+      <HintPath>$(ArcGISProDir)\bin\ArcGIS.Desktop.Framework.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ArcGIS.Desktop.Mapping">
-      <HintPath>C:\Program Files\ArcGIS\Pro\bin\Extensions\Mapping\ArcGIS.Desktop.Mapping.dll</HintPath>
+      <HintPath>$(ArcGISProDir)\bin\Extensions\Mapping\ArcGIS.Desktop.Mapping.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ArcGIS.Desktop.GeoProcessing">
-      <HintPath>C:\Program Files\ArcGIS\Pro\bin\Extensions\Geoprocessing\ArcGIS.Desktop.GeoProcessing.dll</HintPath>
+      <HintPath>$(ArcGISProDir)\bin\Extensions\Geoprocessing\ArcGIS.Desktop.GeoProcessing.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ArcGIS.Desktop.Editing">
-      <HintPath>C:\Program Files\ArcGIS\Pro\bin\Extensions\Editing\ArcGIS.Desktop.Editing.dll</HintPath>
+      <HintPath>$(ArcGISProDir)\bin\Extensions\Editing\ArcGIS.Desktop.Editing.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ArcGIS.Desktop.Layouts">
-      <HintPath>C:\Program Files\ArcGIS\Pro\bin\Extensions\Layout\ArcGIS.Desktop.Layouts.dll</HintPath>
+      <HintPath>$(ArcGISProDir)\bin\Extensions\Layout\ArcGIS.Desktop.Layouts.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ArcGIS.Desktop.Shared.Wpf">
-      <HintPath>C:\Program Files\ArcGIS\Pro\bin\ArcGIS.Desktop.Shared.Wpf.dll</HintPath>
+      <HintPath>$(ArcGISProDir)\bin\ArcGIS.Desktop.Shared.Wpf.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Images\creator.jpg" />
     <Resource Include="Images\mcp_red16.png" />
     <Resource Include="Images\mcp_red32.png" />
     <Resource Include="Images\mcp_green16.png" />
@@ -66,8 +66,13 @@
     <Content Include="Images\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="py-server\arcgis_lab_mcp\gp_tools.json" />
+    <Compile Remove="tests\**" />
+  </ItemGroup>
+
   <!-- Esri packaging targets need full-framework MSBuild (CodeTaskFactory);
        we build the DLL with dotnet and package the .esriAddInX by hand. -->
-  <!-- <Import Project="C:\Program Files\ArcGIS\Pro\bin\Esri.ProApp.SDK.Desktop.targets" /> -->
+  <!-- <Import Project="$(ArcGISProDir)\bin\Esri.ProApp.SDK.Desktop.targets" /> -->
 
 </Project>

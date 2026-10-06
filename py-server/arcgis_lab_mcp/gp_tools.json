@@ -1,0 +1,178 @@
+[
+  {
+    "name": "management.GetCount",
+    "title": "获取计数"
+  },
+  {
+    "name": "management.CreateFileGDB",
+    "title": "创建文件地理数据库"
+  },
+  {
+    "name": "management.CreateFeatureclass",
+    "title": "创建要素类"
+  },
+  {
+    "name": "management.CreateFeatureDataset",
+    "title": "创建要素数据集"
+  },
+  {
+    "name": "management.AddField",
+    "title": "添加字段"
+  },
+  {
+    "name": "management.CopyFeatures",
+    "title": "复制要素"
+  },
+  {
+    "name": "management.CopyRaster",
+    "title": "复制栅格"
+  },
+  {
+    "name": "management.Merge",
+    "title": "合并"
+  },
+  {
+    "name": "management.Project",
+    "title": "投影"
+  },
+  {
+    "name": "management.DefineProjection",
+    "title": "定义投影"
+  },
+  {
+    "name": "management.ProjectRaster",
+    "title": "投影栅格"
+  },
+  {
+    "name": "management.WarpFromFile",
+    "title": "从文件配准栅格"
+  },
+  {
+    "name": "management.Dissolve",
+    "title": "融合"
+  },
+  {
+    "name": "management.RepairGeometry",
+    "title": "修复几何"
+  },
+  {
+    "name": "management.CheckGeometry",
+    "title": "检查几何"
+  },
+  {
+    "name": "management.FeatureVerticesToPoints",
+    "title": "要素折点转点"
+  },
+  {
+    "name": "management.PolygonToLine",
+    "title": "面转线"
+  },
+  {
+    "name": "management.FeatureToPolygon",
+    "title": "要素转面"
+  },
+  {
+    "name": "analysis.Buffer",
+    "title": "缓冲区"
+  },
+  {
+    "name": "analysis.Clip",
+    "title": "裁剪"
+  },
+  {
+    "name": "analysis.Intersect",
+    "title": "相交"
+  },
+  {
+    "name": "analysis.Union",
+    "title": "联合"
+  },
+  {
+    "name": "analysis.Erase",
+    "title": "擦除"
+  },
+  {
+    "name": "analysis.SpatialJoin",
+    "title": "空间连接"
+  },
+  {
+    "name": "conversion.RasterToPolyline",
+    "title": "栅格转折线"
+  },
+  {
+    "name": "conversion.RasterToPolygon",
+    "title": "栅格转面"
+  },
+  {
+    "name": "conversion.PolylineToRaster",
+    "title": "折线转栅格"
+  },
+  {
+    "name": "conversion.PointToRaster",
+    "title": "点转栅格"
+  },
+  {
+    "name": "conversion.PolygonToRaster",
+    "title": "面转栅格"
+  },
+  {
+    "name": "sa.FocalStatistics",
+    "title": "焦点统计"
+  },
+  {
+    "name": "sa.Reclassify",
+    "title": "重分类"
+  },
+  {
+    "name": "sa.Con",
+    "title": "条件函数"
+  },
+  {
+    "name": "sa.SetNull",
+    "title": "设为空函数"
+  },
+  {
+    "name": "sa.Thin",
+    "title": "细化"
+  },
+  {
+    "name": "sa.ExtractByMask",
+    "title": "按掩膜提取"
+  },
+  {
+    "name": "sa.TopoToRaster",
+    "title": "地形转栅格"
+  },
+  {
+    "name": "sa.Idw",
+    "title": "反距离权重插值"
+  },
+  {
+    "name": "sa.Slope",
+    "title": "坡度"
+  },
+  {
+    "name": "sa.Aspect",
+    "title": "坡向"
+  },
+  {
+    "name": "sa.Hillshade",
+    "title": "山体阴影"
+  },
+  {
+    "name": "sa.Contour",
+    "title": "等值线"
+  },
+  {
+    "name": "3d.CreateTin",
+    "title": "创建 TIN"
+  },
+  {
+    "name": "3d.TinRaster",
+    "title": "TIN 转栅格"
+  },
+  {
+    "name": "3d.RasterTin",
+    "title": "栅格转 TIN"
+  }
+]

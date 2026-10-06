@@ -1,7 +1,7 @@
 <ArcGIS defaultAssembly="ArcGisProMcpFree.dll" defaultNamespace="ArcGisProMcpFree" xmlns="http://schemas.esri.com/DADF/Registry" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.esri.com/DADF/Registry file:///C:/Program%20Files/ArcGIS/Pro/bin/ArcGIS.Desktop.Framework.xsd">
-  <AddInInfo id="{59c64cb3-4493-4270-8a30-43b67c25e82e}" version="0.1.0" desktopVersion="3.5">
-    <Name>MCP Free Bridge</Name>
-    <Description>License-free MCP Free Bridge Add-In for ArcGIS Pro 3.5. Opens a local TCP bridge (127.0.0.1:port, default 5876) speaking the same protocol as arcgis-mcp v0.6.0 (MIT) so its Python tools work unchanged. Created by: IngKevin</Description>
+  <AddInInfo id="{59c64cb3-4493-4270-8a30-43b67c25e82e}" version="0.2.3" desktopVersion="3.5">
+    <Name>GIS 实验 MCP</Name>
+    <Description>Native toolbox dialogs, geoprocessing, and experiment evidence. ArcGIS Pro 3.5.</Description>
     <Image>Images\mcp_red32.png</Image>
     <Author>IngKevin</Author>
     <Company>IngKevin</Company>
@@ -11,25 +11,25 @@
 
   <modules>
     <!-- The module loads with Pro, but the pipe server only starts when the
-         user presses Iniciar in the dockpane. Nothing listens on its own. -->
-    <insertModule id="ArcGisProMcpFree_Module" className="Module1" autoLoad="true" caption="MCP Free Bridge Module">
+         user presses Start in the control window. Nothing listens on its own. -->
+    <insertModule id="ArcGisProMcpFree_Module" className="Module1" autoLoad="true" caption="GIS 实验 MCP Module">
       <tabs>
-        <tab id="ArcGisProMcpFree_Tab" caption="MCP Free Bridge">
+        <tab id="ArcGisProMcpFree_Tab" caption="GIS 实验 MCP">
           <group refID="ArcGisProMcpFree_Group" />
         </tab>
       </tabs>
 
       <groups>
-        <group id="ArcGisProMcpFree_Group" caption="MCP Free Bridge" appearsOnAddInTab="false">
+        <group id="ArcGisProMcpFree_Group" caption="GIS 实验 MCP" appearsOnAddInTab="false">
           <button refID="ArcGisProMcpFree_ControlButton" size="large" />
         </group>
       </groups>
 
       <controls>
-        <button id="ArcGisProMcpFree_ControlButton" caption="MCP Free Bridge" className="BridgeControlButton" loadOnClick="true"
+        <button id="ArcGisProMcpFree_ControlButton" caption="GIS 实验 MCP" className="BridgeControlButton" loadOnClick="true"
                 smallImage="Images\mcp_red16.png" largeImage="Images\mcp_red32.png">
-          <tooltip heading="MCP Free Bridge">
-            Opens the panel to start/stop the bridge manually and pick the port (default 5876). UI in English, switchable to Spanish.
+          <tooltip heading="GIS 实验 MCP">
+            打开连接面板，启动或停止本机 MCP 服务。默认端口为 5876。
           </tooltip>
         </button>
       </controls>

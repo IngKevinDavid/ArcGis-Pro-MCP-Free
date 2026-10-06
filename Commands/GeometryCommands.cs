@@ -96,17 +96,21 @@ namespace ArcGisProMcpFree.Commands
                 {
                     throw new InvalidOperationException("No active map view.");
                 }
-
+                if (!view.Map.IsScene) throw new InvalidOperationException("Open a 3D scene before setting its camera.");
                 var camera = view.Camera;
-                double newScale = scale ?? camera.Scale;
-                view.PanTo(camera, new TimeSpan(0));
+                camera.Heading = heading;
+                camera.Pitch = pitch;
+                if (roll.HasValue) camera.Roll = roll.Value;
+                if (scale.HasValue) camera.Scale = scale.Value;
+                bool completed = view.ZoomTo(camera, TimeSpan.Zero);
+                var actual = view.Camera;
                 return new
                 {
-                    success = true,
-                    heading = heading,
-                    pitch = pitch,
-                    roll = roll ?? camera.Roll,
-                    scale = newScale
+                    success = completed,
+                    heading = actual.Heading,
+                    pitch = actual.Pitch,
+                    roll = actual.Roll,
+                    scale = actual.Scale
                 };
             });
         }

@@ -1,6 +1,3 @@
-// Libre subset dispatcher: same {command, params} protocol and response
-// envelope as arcgis-mcp v0.6.0 (MIT). Unsupported commands report
-// "Unsupported command" exactly like upstream.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -44,14 +41,6 @@ namespace ArcGisProMcpFree
                             resultData = await CoreCommands.HealthCheckAsync();
                             break;
 
-                        case "get_capabilities":
-                            resultData = await CoreCommands.GetCapabilitiesAsync();
-                            break;
-
-                        case "check_license":
-                            resultData = await LicenseCommands.CheckLicenseAsync();
-                            break;
-
                         case "list_maps":
                             resultData = await ProjectCommands.ListMapsAsync();
                             break;
@@ -66,15 +55,6 @@ namespace ArcGisProMcpFree
                                 OptBool(paramsEl, "overwrite", false));
                             break;
 
-                        case "list_project_items":
-                            resultData = await ProjectCommands.ListProjectItemsAsync();
-                            break;
-
-                        case "list_bookmarks":
-                            resultData = await ProjectCommands.ListBookmarksAsync(OptStr(paramsEl, "map_name", ""));
-                            break;
-
-                        // Map Commands
                         case "get_active_map":
                             resultData = await MapCommands.GetActiveMapAsync();
                             break;
@@ -108,36 +88,15 @@ namespace ArcGisProMcpFree
                                 OptStr(paramsEl, "layer_name", ""));
                             break;
 
-                        case "create_group_layer":
-                            resultData = await MapCommands.CreateGroupLayerAsync(
-                                ReqStr(paramsEl, "group_name", true),
-                                OptStrArray(paramsEl, "layer_names"));
-                            break;
-
-                        case "add_layer_to_group":
-                            resultData = await MapCommands.AddLayerToGroupAsync(
-                                ReqStr(paramsEl, "group_name", true),
-                                OptStrArray(paramsEl, "layer_names"));
-                            break;
-
-                        case "set_layer_transparency":
-                            resultData = await MapCommands.SetLayerTransparencyAsync(
-                                ReqStr(paramsEl, "layer_name", true),
-                                ReqDouble(paramsEl, "transparency"));
-                            break;
-
-                        case "set_definition_query":
-                            resultData = await MapCommands.SetDefinitionQueryAsync(
-                                ReqStr(paramsEl, "layer_name", true),
-                                OptStr(paramsEl, "sql_filter", ""));
-                            break;
-
                         case "clear_selection":
                             resultData = await MapCommands.ClearSelectionAsync(OptStr(paramsEl, "layer_name", ""));
                             break;
 
                         case "save_project":
                             resultData = await MapCommands.SaveProjectAsync();
+                            break;
+                        case "save_edits":
+                            resultData = new { success = await ArcGIS.Desktop.Core.Project.Current.SaveEditsAsync() };
                             break;
 
                         // Data Commands
@@ -151,13 +110,7 @@ namespace ArcGisProMcpFree
                             resultData = await DataCommands.SelectFeaturesAsync(
                                 ReqStr(paramsEl, "layer_name", true),
                                 ReqStr(paramsEl, "sql_filter", true),
-                                OptStr(paramsEl, "combination", "NEW"));
-                            break;
-
-                        case "get_selected_features":
-                            resultData = await DataCommands.GetSelectedFeaturesAsync(
-                                ReqStr(paramsEl, "layer_name", true),
-                                OptInt(paramsEl, "max_features", 100));
+                                OptStr(paramsEl, "selection_combination", "NEW"));
                             break;
 
                         case "get_layer_fields":
@@ -195,80 +148,15 @@ namespace ArcGisProMcpFree
                             break;
 
                         // Layer IO Commands
-                        case "save_layer_file":
-                            resultData = await LayerIoCommands.SaveLayerFileAsync(
-                                ReqStr(paramsEl, "layer_name", true),
-                                ReqStr(paramsEl, "output_path", true));
-                            break;
-
-                        case "load_layer_file":
-                            resultData = await LayerIoCommands.LoadLayerFileAsync(ReqStr(paramsEl, "layer_file_path", true));
-                            break;
-
-                        case "export_layer":
-                            resultData = await LayerIoCommands.ExportLayerAsync(
-                                ReqStr(paramsEl, "layer_name", true),
-                                ReqStr(paramsEl, "output_path", true),
-                                OptStr(paramsEl, "where_clause", ""));
-                            break;
-
                         case "remove_layer":
                             resultData = await LayerIoCommands.RemoveLayerAsync(ReqStr(paramsEl, "layer_name", true));
                             break;
 
                         // Geoprocessing Commands
-                        case "run_gp_tool":
-                            {
-                                string gpTool = ReqStr(paramsEl, "tool_name", true);
-                                bool gpAllowDelete = OptBool(paramsEl, "allow_delete", false);
-                                bool addGpOutputs = OptBool(paramsEl, "add_outputs_to_map", false);
-                                var paramListProp = paramsEl.GetProperty("parameters");
-                                string[] gpParams = new string[paramListProp.GetArrayLength()];
-                                int index = 0;
-                                foreach (var item in paramListProp.EnumerateArray())
-                                {
-                                    gpParams[index++] = item.GetString() ?? "";
-                                }
-                                resultData = await GeoprocessingCommands.RunGpToolAsync(gpTool, gpParams, gpAllowDelete, addGpOutputs);
-                                break;
-                            }
-
-                        // Geodatabase Commands
-                        case "list_feature_classes":
-                            resultData = await GeodatabaseCommands.ListFeatureClassesAsync(ReqStr(paramsEl, "workspace_path", true));
-                            break;
-
-                        case "list_domains":
-                            resultData = await GeodatabaseCommands.ListDomainsAsync(ReqStr(paramsEl, "workspace_path", true));
-                            break;
-
-                        case "create_domain":
-                            resultData = await GeodatabaseCommands.CreateDomainAsync(
-                                ReqStr(paramsEl, "workspace_path", true),
-                                ReqStr(paramsEl, "domain_name", true),
-                                OptStr(paramsEl, "field_type", "TEXT"),
-                                OptStr(paramsEl, "domain_type", "CODED"),
-                                OptStr(paramsEl, "description", ""));
-                            break;
-
                         case "describe_dataset":
                             resultData = await GeodatabaseCommands.DescribeDatasetAsync(ReqStr(paramsEl, "dataset_path", true));
                             break;
 
-                        // Bookmark commands (list_bookmarks already handled above)
-                        case "create_bookmark":
-                            resultData = await BookmarkCommands.CreateBookmarkAsync(ReqStr(paramsEl, "name", true));
-                            break;
-
-                        case "zoom_to_bookmark":
-                            resultData = await BookmarkCommands.ZoomToBookmarkAsync(ReqStr(paramsEl, "name", true));
-                            break;
-
-                        case "delete_bookmark":
-                            resultData = await BookmarkCommands.DeleteBookmarkAsync(ReqStr(paramsEl, "name", true));
-                            break;
-
-                        // Layout Commands
                         case "list_layouts":
                             resultData = await LayoutCommands.ListLayoutsAsync();
                             break;
@@ -277,16 +165,8 @@ namespace ArcGisProMcpFree
                             resultData = await LayoutCommands.ExportLayoutAsync(
                                 ReqStr(paramsEl, "layout_name", true),
                                 ReqStr(paramsEl, "output_path", true),
-                                OptStr(paramsEl, "format", "PDF"),
-                                OptInt(paramsEl, "resolution", 300));
-                            break;
-
-                        case "export_all_layouts":
-                            resultData = await LayoutCommands.ExportAllLayoutsAsync(
-                                ReqStr(paramsEl, "output_directory", true),
-                                OptStr(paramsEl, "format", "PDF"),
-                                OptInt(paramsEl, "resolution", 300),
-                                OptBool(paramsEl, "include_map_series", true));
+                                OptStr(paramsEl, "format_type", "PDF"),
+                                OptInt(paramsEl, "resolution_dpi", 300));
                             break;
 
                         case "create_basic_layout":
@@ -295,57 +175,18 @@ namespace ArcGisProMcpFree
                                 OptStr(paramsEl, "title", ""),
                                 OptDouble(paramsEl, "page_width", 11.0),
                                 OptDouble(paramsEl, "page_height", 8.5));
+                            await ProjectCommands.OpenLayoutAsync(ReqStr(paramsEl, "layout_name", true));
                             break;
 
                         case "export_active_map":
                             resultData = await LayoutCommands.ExportActiveMapAsync(
                                 ReqStr(paramsEl, "output_path", true),
-                                OptStr(paramsEl, "format", "PNG"),
+                                OptStr(paramsEl, "format_type", "PNG"),
                                 OptInt(paramsEl, "width", 1920),
                                 OptInt(paramsEl, "height", 1080),
-                                OptInt(paramsEl, "resolution", 150));
+                                OptInt(paramsEl, "resolution_dpi", 150));
                             break;
 
-                        case "create_map_series":
-                            resultData = await LayoutCommands.CreateMapSeriesAsync(
-                                ReqStr(paramsEl, "layout_name", true),
-                                ReqStr(paramsEl, "map_frame_name", true),
-                                ReqStr(paramsEl, "index_layer_name", true),
-                                ReqStr(paramsEl, "name_field", true));
-                            break;
-
-                        case "export_map_series":
-                            resultData = await LayoutCommands.ExportMapSeriesAsync(
-                                ReqStr(paramsEl, "layout_name", true),
-                                ReqStr(paramsEl, "output_path", true),
-                                OptStr(paramsEl, "format", "PDF"),
-                                OptInt(paramsEl, "resolution", 300));
-                            break;
-
-                        case "add_dynamic_text":
-                            resultData = await LayoutCommands.AddDynamicTextAsync(
-                                ReqStr(paramsEl, "layout_name", true),
-                                OptStr(paramsEl, "text", ""),
-                                OptDouble(paramsEl, "x", 0.5),
-                                OptDouble(paramsEl, "y", 0.5),
-                                OptDouble(paramsEl, "width", 4.0),
-                                OptDouble(paramsEl, "height", 0.5),
-                                OptStr(paramsEl, "element_name", "MCP Dynamic Text"));
-                            break;
-
-                        case "update_layout_element":
-                            {
-                                bool uleHasText = HasProp(paramsEl, "text");
-                                string uleText = uleHasText ? (OptStr(paramsEl, "text", "")) : "";
-                                bool? uleVisible = HasProp(paramsEl, "visible") ? (bool?)OptBool(paramsEl, "visible", false) : (bool?)null;
-                                resultData = await LayoutCommands.UpdateLayoutElementAsync(
-                                    ReqStr(paramsEl, "layout_name", true),
-                                    ReqStr(paramsEl, "element_name", true),
-                                    uleText, uleHasText, uleVisible);
-                                break;
-                            }
-
-                        // Editing Commands
                         case "update_attributes":
                             resultData = await EditingCommands.UpdateAttributesAsync(
                                 ReqStr(paramsEl, "layer_name", true),
@@ -360,8 +201,7 @@ namespace ArcGisProMcpFree
                                     : new Dictionary<string, object>();
                                 resultData = await EditingCommands.CreateFeatureAsync(
                                     ReqStr(paramsEl, "layer_name", true),
-                                    ReqDouble(paramsEl, "x"),
-                                    ReqDouble(paramsEl, "y"),
+                                    paramsEl.GetProperty("geometry"),
                                     OptInt(paramsEl, "wkid", 4326),
                                     createAttrs);
                                 break;
@@ -374,67 +214,6 @@ namespace ArcGisProMcpFree
 
                         case "undo_last_edit":
                             resultData = await EditingCommands.UndoLastEditAsync();
-                            break;
-
-                        // Bulk Data-Access Commands (arcpy.da-style)
-                        case "insert_features":
-                            resultData = await DataAccessCommands.InsertFeaturesAsync(
-                                ReqStr(paramsEl, "layer_name", true),
-                                DeserializeFeatureList(paramsEl.GetProperty("features")));
-                            break;
-
-                        case "update_features":
-                            resultData = await DataAccessCommands.UpdateFeaturesAsync(
-                                ReqStr(paramsEl, "layer_name", true),
-                                DeserializeFeatureList(paramsEl.GetProperty("updates")));
-                            break;
-
-                        case "delete_features":
-                            {
-                                var oidProp = paramsEl.GetProperty("object_ids");
-                                var oids = new List<long>();
-                                foreach (var item in oidProp.EnumerateArray())
-                                {
-                                    long v;
-                                    if (item.TryGetInt64(out v)) oids.Add(v);
-                                }
-                                resultData = await DataAccessCommands.DeleteFeaturesAsync(
-                                    ReqStr(paramsEl, "layer_name", true), oids);
-                                break;
-                            }
-
-                        // GeometryEngine Commands
-                        case "measure_distance":
-                            resultData = await GeometryCommands.MeasureDistanceAsync(
-                                ReqStr(paramsEl, "layer_a", true),
-                                ReqStr(paramsEl, "layer_b", true));
-                            break;
-
-                        case "geometry_contains":
-                            resultData = await GeometryCommands.ContainsAsync(
-                                ReqStr(paramsEl, "layer_a", true),
-                                ReqStr(paramsEl, "layer_b", true));
-                            break;
-
-                        case "geometry_intersects":
-                            resultData = await GeometryCommands.IntersectsAsync(
-                                ReqStr(paramsEl, "layer_a", true),
-                                ReqStr(paramsEl, "layer_b", true));
-                            break;
-
-                        case "geometry_within_distance":
-                            resultData = await GeometryCommands.WithinDistanceAsync(
-                                ReqStr(paramsEl, "layer_a", true),
-                                ReqStr(paramsEl, "layer_b", true),
-                                ReqDouble(paramsEl, "distance"));
-                            break;
-
-                        case "geometry_area":
-                            resultData = await GeometryCommands.AreaAsync(ReqStr(paramsEl, "layer_name", true));
-                            break;
-
-                        case "geometry_length":
-                            resultData = await GeometryCommands.LengthAsync(ReqStr(paramsEl, "layer_name", true));
                             break;
 
                         case "set_camera_3d":
@@ -483,6 +262,24 @@ namespace ArcGisProMcpFree
                                 OptDouble(paramsEl, "alpha", 100));
                             break;
 
+                        case "prepare_gp_tool":
+                            resultData = await GeoprocessingCommands.PrepareAsync(paramsEl);
+                            break;
+                        case "execute_prepared_tool":
+                            resultData = await GeoprocessingCommands.ExecutePreparedAsync(ReqStr(paramsEl, "operation_id", true));
+                            break;
+                        case "get_gp_status":
+                            resultData = GeoprocessingCommands.GetStatus(ReqStr(paramsEl, "operation_id", true));
+                            break;
+                        case "open_attribute_table":
+                            resultData = await ProjectCommands.OpenAttributeTableAsync(ReqStr(paramsEl, "layer_name", true));
+                            break;
+                        case "open_layout":
+                            resultData = await ProjectCommands.OpenLayoutAsync(ReqStr(paramsEl, "layout_name", true));
+                            break;
+                        case "create_map":
+                            resultData = await ProjectCommands.CreateMapAsync(ReqStr(paramsEl, "name", true), OptStr(paramsEl, "map_type", "Map"), OptInt(paramsEl, "wkid", 4326));
+                            break;
                         default:
                             return SerializeError("Unsupported command: '" + command + "'");
                     }

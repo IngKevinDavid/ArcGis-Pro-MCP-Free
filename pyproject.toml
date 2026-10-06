@@ -1,23 +1,21 @@
 [build-system]
-requires = ["setuptools>=61"]
+requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "arcgis-pro-mcp-free"
-version = "0.1.0"
-description = "Free local MCP bridge for ArcGIS Pro (TCP 127.0.0.1:PORT)"
+name = "arcgis-lab-mcp"
+version = "0.2.3"
+description = "Native ArcGIS Pro toolbox dialogs and experiment screenshots"
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }
-dependencies = [
-    "arcgis-mcp-server @ https://github.com/IngKevinDavid/ArcGis-Pro-MCP-Free/releases/download/v0.1.0/arcgis_mcp_server-0.6.0-py3-none-any.whl",
-]
+dependencies = ["mcp>=1.28.1,<2", "jsonschema>=4.26,<5", "windows-capture==2.0.1", "pywin32>=312", "psutil>=7,<8"]
 
 [project.scripts]
-arcgis-pro-mcp-free = "tcp_bridge:main"
+arcgis-lab-mcp = "arcgis_lab_mcp.server:main"
 
-[tool.setuptools]
-py-modules = ["tcp_bridge"]
+[tool.setuptools.packages.find]
+where = ["py-server"]
 
-[tool.setuptools.package-dir]
-"" = "py-server"
+[tool.setuptools.package-data]
+arcgis_lab_mcp = ["*.json"]

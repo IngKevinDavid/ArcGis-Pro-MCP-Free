@@ -55,7 +55,7 @@ namespace ArcGisProMcpFree
             _listeners = new List<Task>();
             for (int i = 0; i < MaxListeners; i++)
                 _listeners.Add(Task.Run(() => ListenerLoopAsync(_cts.Token)));
-            System.Diagnostics.Debug.WriteLine("MCP Free Bridge listening on " + Endpoint);
+            System.Diagnostics.Debug.WriteLine("GIS Lab MCP listening on " + Endpoint);
         }
 
         public void Stop()
@@ -78,7 +78,7 @@ namespace ArcGisProMcpFree
                 _cts = null;
                 _listener = null;
                 _listeners = null;
-                System.Diagnostics.Debug.WriteLine("MCP Free Bridge stopped.");
+                System.Diagnostics.Debug.WriteLine("GIS Lab MCP stopped.");
             }
         }
 

@@ -1,0 +1,1289 @@
+[
+  {
+    "name": "arcgis_health_check",
+    "description": "Checks MCP/Add-in/ArcGIS Pro pipe health and active project state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_list_maps",
+    "description": "Lists maps in the current ArcGIS Pro project.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_open_map",
+    "description": "Opens a map in ArcGIS Pro by name. Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "map_name": {
+          "title": "Map Name",
+          "type": "string"
+        },
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "required": [
+        "map_name"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_save_project_as",
+    "description": "Saves the current ArcGIS Pro project to a new APRX path. Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "output_path": {
+          "title": "Output Path",
+          "type": "string"
+        },
+        "overwrite": {
+          "default": false,
+          "title": "Overwrite",
+          "type": "boolean"
+        },
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "required": [
+        "output_path"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_get_active_map",
+    "description": "Returns the name of the active map and scene view in ArcGIS Pro.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_list_layers",
+    "description": "Lists all layers in the active map, showing names, types, visibility, and total features.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "include_hidden": {
+          "default": true,
+          "title": "Include Hidden",
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_zoom_to_layer",
+    "description": "Zooms the active map view to the spatial extent of a specific layer by name. Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "layer_name": {
+          "title": "Layer Name",
+          "type": "string"
+        },
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "required": [
+        "layer_name"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_toggle_layer_visibility",
+    "description": "Toggles the visibility of a layer in the active map by name. Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "layer_name": {
+          "title": "Layer Name",
+          "type": "string"
+        },
+        "visible": {
+          "title": "Visible",
+          "type": "boolean"
+        },
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "required": [
+        "layer_name",
+        "visible"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_set_map_extent",
+    "description": "Sets the active map view extent to the specified bounding box coordinates (default WKID 4326). Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "xmin": {
+          "title": "Xmin",
+          "type": "number"
+        },
+        "ymin": {
+          "title": "Ymin",
+          "type": "number"
+        },
+        "xmax": {
+          "title": "Xmax",
+          "type": "number"
+        },
+        "ymax": {
+          "title": "Ymax",
+          "type": "number"
+        },
+        "wkid": {
+          "default": 4326,
+          "title": "Wkid",
+          "type": "integer"
+        },
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "required": [
+        "xmin",
+        "ymin",
+        "xmax",
+        "ymax"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_add_layer_to_map",
+    "description": "Adds a dataset, layer file, or service URL to the active map. Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "data_path": {
+          "title": "Data Path",
+          "type": "string"
+        },
+        "layer_name": {
+          "default": "",
+          "title": "Layer Name",
+          "type": "string"
+        },
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "required": [
+        "data_path"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_clear_selection",
+    "description": "Clears selection in one feature layer or in the whole active map. Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "layer_name": {
+          "default": "",
+          "title": "Layer Name",
+          "type": "string"
+        },
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_save_project",
+    "description": "Saves the current ArcGIS Pro project. Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_count_features",
+    "description": "Counts the number of features in a specified layer. Optional SQL filter (e.g. \"POPULATION > 100000\").",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "layer_name": {
+          "title": "Layer Name",
+          "type": "string"
+        },
+        "sql_filter": {
+          "default": "",
+          "title": "Sql Filter",
+          "type": "string"
+        }
+      },
+      "required": [
+        "layer_name"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_select_features",
+    "description": "Selects features in a layer using a SQL attribute query. combination: NEW, ADD, REMOVE, SUBTRACT, XOR. Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "layer_name": {
+          "title": "Layer Name",
+          "type": "string"
+        },
+        "sql_filter": {
+          "title": "Sql Filter",
+          "type": "string"
+        },
+        "selection_combination": {
+          "default": "NEW",
+          "title": "Selection Combination",
+          "type": "string",
+          "enum": [
+            "NEW",
+            "ADD",
+            "REMOVE",
+            "SUBTRACT",
+            "AND",
+            "XOR"
+          ]
+        },
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "required": [
+        "layer_name",
+        "sql_filter"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_get_layer_fields",
+    "description": "Gets the schema/fields of a layer, listing names, aliases, and data types of all attributes.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "layer_name": {
+          "title": "Layer Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "layer_name"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_query_layer",
+    "description": "Queries attribute rows from an active-map feature layer.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "layer_name": {
+          "title": "Layer Name",
+          "type": "string"
+        },
+        "where_clause": {
+          "default": "1=1",
+          "title": "Where Clause",
+          "type": "string"
+        },
+        "fields": {
+          "default": "*",
+          "title": "Fields",
+          "type": "string"
+        },
+        "limit": {
+          "default": 100,
+          "title": "Limit",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "include_geometry": {
+          "default": false,
+          "title": "Include Geometry",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "layer_name"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_apply_graduated_symbology",
+    "description": "Applies graduated color symbology to a feature layer. Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "layer_name": {
+          "title": "Layer Name",
+          "type": "string"
+        },
+        "field_name": {
+          "title": "Field Name",
+          "type": "string"
+        },
+        "break_count": {
+          "default": 5,
+          "title": "Break Count",
+          "type": "integer"
+        },
+        "classification_method": {
+          "default": "NaturalBreaks",
+          "title": "Classification Method",
+          "type": "string"
+        },
+        "color_ramp": {
+          "default": "Yellow-Orange-Red",
+          "title": "Color Ramp",
+          "type": "string"
+        },
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "required": [
+        "layer_name",
+        "field_name"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_apply_unique_value_symbology",
+    "description": "Applies unique value symbology to a feature layer. Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "layer_name": {
+          "title": "Layer Name",
+          "type": "string"
+        },
+        "field_name": {
+          "title": "Field Name",
+          "type": "string"
+        },
+        "color_ramp": {
+          "default": "Default",
+          "title": "Color Ramp",
+          "type": "string"
+        },
+        "values_limit": {
+          "default": 100,
+          "title": "Values Limit",
+          "type": "integer"
+        },
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "required": [
+        "layer_name",
+        "field_name"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_apply_symbology_from_layer",
+    "description": "Applies symbology from an existing layer or .lyrx file. Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "target_layer": {
+          "title": "Target Layer",
+          "type": "string"
+        },
+        "symbology_layer": {
+          "title": "Symbology Layer",
+          "type": "string"
+        },
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "required": [
+        "target_layer",
+        "symbology_layer"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_set_layer_symbol",
+    "description": "Sets the color (RGB 0-255) and optionally the width of a feature layer's simple renderer via direct CIM manipulation. Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "layer_name": {
+          "title": "Layer Name",
+          "type": "string"
+        },
+        "r": {
+          "title": "R",
+          "type": "integer"
+        },
+        "g": {
+          "title": "G",
+          "type": "integer"
+        },
+        "b": {
+          "title": "B",
+          "type": "integer"
+        },
+        "width": {
+          "default": 0,
+          "title": "Width",
+          "type": "number"
+        },
+        "alpha": {
+          "default": 100,
+          "title": "Alpha",
+          "type": "number"
+        },
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "required": [
+        "layer_name",
+        "r",
+        "g",
+        "b"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_label_layer",
+    "description": "Enables labels on a feature layer using a field-based expression. Optionally applies a text halo. Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "layer_name": {
+          "title": "Layer Name",
+          "type": "string"
+        },
+        "field_name": {
+          "title": "Field Name",
+          "type": "string"
+        },
+        "visible": {
+          "default": true,
+          "title": "Visible",
+          "type": "boolean"
+        },
+        "expression_engine": {
+          "default": "Arcade",
+          "title": "Expression Engine",
+          "type": "string"
+        },
+        "halo_size": {
+          "default": 0,
+          "title": "Halo Size",
+          "type": "number"
+        },
+        "halo_color": {
+          "default": "#FFFFFF",
+          "title": "Halo Color",
+          "type": "string"
+        },
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "required": [
+        "layer_name",
+        "field_name"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_get_layer_symbology",
+    "description": "Returns renderer metadata for a layer.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "layer_name": {
+          "title": "Layer Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "layer_name"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_apply_raster_colorizer",
+    "description": "Applies raster symbology from a layer file or existing layer. Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "raster_layer": {
+          "title": "Raster Layer",
+          "type": "string"
+        },
+        "symbology_layer": {
+          "default": "",
+          "title": "Symbology Layer",
+          "type": "string"
+        },
+        "color_ramp": {
+          "default": "Default",
+          "title": "Color Ramp",
+          "type": "string"
+        },
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "required": [
+        "raster_layer"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_remove_layer",
+    "description": "Removes a layer from the active map. Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "layer_name": {
+          "title": "Layer Name",
+          "type": "string"
+        },
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "required": [
+        "layer_name"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_update_attributes",
+    "description": "Updates attributes for a feature by ObjectID. Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "layer_name": {
+          "title": "Layer Name",
+          "type": "string"
+        },
+        "object_id": {
+          "title": "Object Id",
+          "type": "integer"
+        },
+        "attributes": {
+          "additionalProperties": true,
+          "title": "Attributes",
+          "type": "object"
+        },
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "required": [
+        "layer_name",
+        "object_id",
+        "attributes"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_create_feature",
+    "description": "通过原生编辑操作创建点、单部件折线或闭合多边形，并按目标图层坐标系投影。保存操作前后截图。",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "layer_name": {
+          "title": "Layer Name",
+          "type": "string"
+        },
+        "wkid": {
+          "title": "Wkid",
+          "type": "integer",
+          "minimum": 1
+        },
+        "attributes": {
+          "title": "Attributes",
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        },
+        "geometry": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "Point"
+                },
+                "coordinates": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                }
+              },
+              "required": [
+                "type",
+                "coordinates"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "Polyline"
+                },
+                "coordinates": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    },
+                    "minItems": 2,
+                    "maxItems": 2
+                  },
+                  "minItems": 2,
+                  "maxItems": 10000
+                }
+              },
+              "required": [
+                "type",
+                "coordinates"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "Polygon"
+                },
+                "coordinates": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    },
+                    "minItems": 2,
+                    "maxItems": 2
+                  },
+                  "minItems": 4,
+                  "maxItems": 10000
+                }
+              },
+              "required": [
+                "type",
+                "coordinates"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "layer_name",
+        "geometry",
+        "wkid"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_delete_selected_features",
+    "description": "Deletes selected features from a feature layer. Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "layer_name": {
+          "title": "Layer Name",
+          "type": "string"
+        },
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "required": [
+        "layer_name"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_undo_last_edit",
+    "description": "Undoes the last MCP edit operation. Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_describe_dataset",
+    "description": "Describes an active-map layer or geodatabase dataset.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "dataset_path": {
+          "title": "Dataset Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "dataset_path"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_list_layouts",
+    "description": "Lists all the layouts (print layouts/map layouts) defined in the current ArcGIS Pro project.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_export_layout",
+    "description": "Exports a print layout to the specified output file path. format_type: PDF, PNG, JPEG. Resolution in DPI. Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "layout_name": {
+          "title": "Layout Name",
+          "type": "string"
+        },
+        "output_path": {
+          "title": "Output Path",
+          "type": "string"
+        },
+        "format_type": {
+          "default": "PDF",
+          "title": "Format Type",
+          "type": "string",
+          "enum": [
+            "PNG",
+            "PDF",
+            "JPEG",
+            "JPG"
+          ]
+        },
+        "resolution_dpi": {
+          "default": 300,
+          "title": "Resolution Dpi",
+          "type": "integer",
+          "minimum": 72,
+          "maximum": 1200
+        },
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "required": [
+        "layout_name",
+        "output_path"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_create_basic_layout",
+    "description": "Creates a basic layout from the active map with map frame and cartographic surrounds. Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "layout_name": {
+          "title": "Layout Name",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "page_width": {
+          "default": 11,
+          "title": "Page Width",
+          "type": "number",
+          "minimum": 5
+        },
+        "page_height": {
+          "default": 8.5,
+          "title": "Page Height",
+          "type": "number",
+          "minimum": 5
+        },
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "required": [
+        "layout_name",
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_export_active_map",
+    "description": "Exports the active map view to an image file. Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "output_path": {
+          "title": "Output Path",
+          "type": "string"
+        },
+        "format_type": {
+          "default": "PNG",
+          "title": "Format Type",
+          "type": "string",
+          "enum": [
+            "PNG",
+            "PDF",
+            "JPEG",
+            "JPG"
+          ]
+        },
+        "width": {
+          "default": 1920,
+          "title": "Width",
+          "type": "integer"
+        },
+        "height": {
+          "default": 1080,
+          "title": "Height",
+          "type": "integer"
+        },
+        "resolution_dpi": {
+          "default": 150,
+          "title": "Resolution Dpi",
+          "type": "integer",
+          "minimum": 72,
+          "maximum": 1200
+        },
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "required": [
+        "output_path"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "arcgis_set_camera_3d",
+    "description": "Sets the camera orientation of the active view (3D scenes). heading 0-360, pitch -90 to 90. Saves before/after window screenshots and a JSON record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "heading": {
+          "title": "Heading",
+          "type": "number"
+        },
+        "pitch": {
+          "title": "Pitch",
+          "type": "number"
+        },
+        "roll": {
+          "default": 0,
+          "title": "Roll",
+          "type": "number"
+        },
+        "scale": {
+          "title": "Scale",
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "evidence_dir": {
+          "type": "string",
+          "description": "Absolute screenshot/log folder. Defaults to ARCGIS_LAB_EVIDENCE_DIR."
+        },
+        "step_title": {
+          "type": "string",
+          "description": "Short label for this experiment step."
+        }
+      },
+      "required": [
+        "heading",
+        "pitch"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  }
+]

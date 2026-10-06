@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ArcGIS.Core.CIM;
 using ArcGIS.Desktop.Catalog;
 using ArcGIS.Desktop.Core;
 using ArcGIS.Desktop.Framework;
@@ -14,6 +15,39 @@ namespace ArcGisProMcpFree.Commands
 {
     public static class ProjectCommands
     {
+        public static async Task<object> CreateMapAsync(string name, string mapType, int wkid)
+        {
+            EnsureProject();
+            if (mapType != "Map" && mapType != "Scene") throw new ArgumentException("map_type must be Map or Scene.");
+            var map = await QueuedTask.Run(() =>
+            {
+                var created = MapFactory.Instance.CreateMap(name, mapType == "Scene" ? MapType.Scene : MapType.Map,
+                    mapType == "Scene" ? MapViewingMode.SceneLocal : MapViewingMode.Map, Basemap.None);
+                created.SetSpatialReference(ArcGIS.Core.Geometry.SpatialReferenceBuilder.CreateSpatialReference(wkid));
+                return created;
+            });
+            await FrameworkApplication.Panes.CreateMapPaneAsync(map);
+            return new { name, map_type = mapType, wkid };
+        }
+
+        public static async Task<object> OpenAttributeTableAsync(string layerName)
+        {
+            var layer = await QueuedTask.Run(() => MapView.Active?.Map.GetLayersAsFlattenedList().OfType<FeatureLayer>()
+                .FirstOrDefault(l => l.Name.Equals(layerName, StringComparison.OrdinalIgnoreCase)));
+            if (layer == null) throw new ArgumentException("Feature layer not found: " + layerName);
+            await System.Windows.Application.Current.Dispatcher.InvokeAsync(() => FrameworkApplication.Panes.OpenTablePane(layer));
+            return new { layer_name = layerName, table_open = true };
+        }
+
+        public static async Task<object> OpenLayoutAsync(string layoutName)
+        {
+            var layout = await QueuedTask.Run(() => Project.Current.GetItems<LayoutProjectItem>()
+                .FirstOrDefault(l => l.Name.Equals(layoutName, StringComparison.OrdinalIgnoreCase))?.GetLayout());
+            if (layout == null) throw new ArgumentException("Layout not found: " + layoutName);
+            await System.Windows.Application.Current.Dispatcher.InvokeAsync(async () => await FrameworkApplication.Panes.CreateLayoutPaneAsync(layout)).Task.Unwrap();
+            return new { layout_name = layoutName, layout_open = true };
+        }
+
         public static Task<object> ListMapsAsync()
         {
             return QueuedTask.Run<object>(() =>
@@ -36,7 +70,9 @@ namespace ArcGisProMcpFree.Commands
             {
                 throw new ArgumentException("Map '" + mapName + "' not found.");
             }
-            IMapPane pane = await item.OpenMapPaneAsync();
+            var map = await QueuedTask.Run(() => item.GetMap());
+            // Let the map's stored viewing mode select 2D, local scene, or global scene.
+            IMapPane pane = await FrameworkApplication.Panes.CreateMapPaneAsync(map);
             return new
             {
                 success = true,

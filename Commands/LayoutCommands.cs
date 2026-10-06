@@ -156,9 +156,9 @@ namespace ArcGisProMcpFree.Commands
                     null
                 );
 
-                TryCreateSurround(layout, mapFrame.Name, MapSurroundType.Legend, "Legend", pageWidth - 2.7, 0.8, pageWidth - 0.4, 3.0);
-                TryCreateSurround(layout, mapFrame.Name, MapSurroundType.NorthArrow, "North Arrow", pageWidth - 1.0, pageHeight - 1.4, pageWidth - 0.4, pageHeight - 0.8);
-                TryCreateSurround(layout, mapFrame.Name, MapSurroundType.ScaleBar, "Scale Bar", 0.7, 0.25, 3.0, 0.55);
+                CreateSurround(layout, mapFrame.Name, MapSurroundType.Legend, "Legend", pageWidth - 2.7, 0.8, pageWidth - 0.4, 3.0);
+                CreateSurround(layout, mapFrame.Name, MapSurroundType.NorthArrow, "North Arrow", pageWidth - 1.0, pageHeight - 1.4, pageWidth - 0.4, pageHeight - 0.8);
+                CreateSurround(layout, mapFrame.Name, MapSurroundType.ScaleBar, "Scale Bar", 0.7, 0.25, 3.0, 0.55);
 
                 return new
                 {
@@ -166,7 +166,8 @@ namespace ArcGisProMcpFree.Commands
                     layout_name = layoutName,
                     map_name = activeView.Map.Name,
                     page_width = pageWidth,
-                    page_height = pageHeight
+                    page_height = pageHeight,
+                    elements = layout.GetElementsAsFlattenedList().Select(element => element.Name).ToArray()
                 };
             });
         }
@@ -467,7 +468,7 @@ namespace ArcGisProMcpFree.Commands
             });
         }
 
-        private static void TryCreateSurround(
+        private static void CreateSurround(
             Layout layout,
             string mapFrameName,
             MapSurroundType type,
@@ -477,8 +478,6 @@ namespace ArcGisProMcpFree.Commands
             double xmax,
             double ymax)
         {
-            try
-            {
                 var info = CreateMapSurroundInfo(type);
                 info.MapFrameName = mapFrameName;
                 ElementFactory.Instance.CreateMapSurroundElement(
@@ -489,15 +488,6 @@ namespace ArcGisProMcpFree.Commands
                     true,
                     null
                 );
-            }
-            catch (InvalidOperationException ex)
-            {
-                System.Diagnostics.Debug.WriteLine("Map surround '" + name + "' was not created: " + ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                System.Diagnostics.Debug.WriteLine("Map surround '" + name + "' has invalid parameters: " + ex.Message);
-            }
         }
 
         private static Layout GetLayout(string layoutName)

@@ -67,7 +67,7 @@ namespace ArcGisProMcpFree
         #region Overrides
         /// <summary>
         /// Called when the Module is initialized. The bridge is NOT started here:
-        /// the user starts it manually from the MCP Free Bridge window.
+        /// the user starts it manually from the GIS Lab MCP window.
         /// </summary>
         protected override bool Initialize()
         {

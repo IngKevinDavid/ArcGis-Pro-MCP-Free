@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.Json;
 using ArcGIS.Core.Geometry;
 using ArcGIS.Desktop.Editing;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
@@ -41,8 +42,7 @@ namespace ArcGisProMcpFree.Commands
 
         public static async Task<object> CreateFeatureAsync(
             string layerName,
-            double x,
-            double y,
+            JsonElement geometryJson,
             int wkid,
             Dictionary<string, object> attributes)
         {
@@ -50,12 +50,41 @@ namespace ArcGisProMcpFree.Commands
             {
                 var layer = GetFeatureLayer(layerName);
                 var spatialReference = SpatialReferenceBuilder.CreateSpatialReference(wkid);
-                var point = MapPointBuilderEx.CreateMapPoint(x, y, spatialReference);
+                string kind = geometryJson.GetProperty("type").GetString();
+                var coordinates = geometryJson.GetProperty("coordinates");
+                Geometry geometry;
+                if (kind == "Point")
+                {
+                    var xy = coordinates.EnumerateArray().Select(v => v.GetDouble()).ToArray();
+                    if (xy.Length != 2) throw new ArgumentException("Point needs x and y.");
+                    geometry = MapPointBuilderEx.CreateMapPoint(xy[0], xy[1], spatialReference);
+                }
+                else
+                {
+                    var points = coordinates.EnumerateArray().Select(v =>
+                    {
+                        var xy = v.EnumerateArray().Select(n => n.GetDouble()).ToArray();
+                        if (xy.Length != 2) throw new ArgumentException("Each vertex needs x and y.");
+                        return MapPointBuilderEx.CreateMapPoint(xy[0], xy[1], spatialReference);
+                    }).ToArray();
+                    if (kind == "Polyline" && points.Length >= 2) geometry = PolylineBuilderEx.CreatePolyline(points, spatialReference);
+                    else if (kind == "Polygon" && points.Length >= 4)
+                    {
+                        if (points[0].X != points[^1].X || points[0].Y != points[^1].Y) throw new ArgumentException("Polygon ring must be closed.");
+                        geometry = PolygonBuilderEx.CreatePolygon(points, spatialReference);
+                    }
+                    else throw new ArgumentException("Expected Point, Polyline (2+ vertices), or closed Polygon (4+ vertices).");
+                }
+                using var featureClass = layer.GetFeatureClass();
+                using var definition = featureClass.GetDefinition();
+                if (geometry.GeometryType != definition.GetShapeType()) throw new ArgumentException("Geometry type does not match the target feature class.");
+                geometry = GeometryEngine.Instance.Project(geometry, definition.GetSpatialReference());
+                if (!GeometryEngine.Instance.IsSimpleAsFeature(geometry)) throw new ArgumentException("Geometry is not simple. Correct the vertices before creating it.");
                 var editOperation = new EditOperation
                 {
                     Name = "MCP create feature " + layerName
                 };
-                editOperation.Create(layer, point, attributes);
+                editOperation.Create(layer, geometry, attributes);
                 return editOperation;
             });
 
@@ -65,7 +94,7 @@ namespace ArcGisProMcpFree.Commands
             }
 
             LastOperation = operation;
-            return new { success = true, layer_name = layerName, x, y, wkid };
+            return new { success = true, layer_name = layerName, geometry_type = geometryJson.GetProperty("type").GetString(), wkid };
         }
 
         public static async Task<object> DeleteSelectedFeaturesAsync(string layerName)
